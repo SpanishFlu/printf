@@ -1,4 +1,3 @@
-#include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
 
@@ -43,6 +42,22 @@ int print_percent(void)
 }
 
 /**
+ * print_int - Print an integer
+ * @args: Arguments list
+ *
+ * Return: Number of characters printed
+ */
+int print_int(va_list args)
+{
+	int num = va_arg(args, int);
+	char buffer[12];
+	int count = 0;
+
+	count = snprintf(buffer, sizeof(buffer), "%d", num);
+	return (write(1, buffer, count));
+}
+
+/**
  * _printf - Custom printf function
  * @format: Format string containing directives
  *
@@ -65,6 +80,8 @@ int _printf(const char *format, ...)
 				count += print_char(args);
 			else if (*format == 's')
 				count += print_str(args);
+			else if (*format == 'd' || *format == 'i')
+				count += print_int(args);
 			else if (*format == '%')
 				count += print_percent();
 			else
@@ -85,4 +102,3 @@ int _printf(const char *format, ...)
 
 	return (count);
 }
-
